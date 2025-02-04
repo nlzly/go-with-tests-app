@@ -2,14 +2,17 @@ package main
 
 import (
 	httpserver "app-server/http-server"
+	"fmt"
 	"log"
-	"net/http"
 	"os"
 )
 
 const dbFileName = "game.db.json"
 
 func main() {
+	fmt.Println("Let's play poker")
+	fmt.Println("Type {Name} wins to record a win")
+
 	db, err := os.OpenFile(dbFileName, os.O_RDWR|os.O_CREATE, 0666)
 
 	if err != nil {
@@ -22,6 +25,6 @@ func main() {
 		log.Fatalf("problem creating file system player store, %v ", err)
 	}
 
-	server := httpserver.NewServer(store)
-	log.Fatal(http.ListenAndServe(":5000", server))
+	game := httpserver.NewCLI(store, os.Stdin)
+	game.PlayPoker()
 }
