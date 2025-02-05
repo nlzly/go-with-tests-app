@@ -25,6 +25,6 @@ func main() {
 		log.Fatalf("problem creating file system player store, %v ", err)
 	}
 
-	game := httpserver.NewCLI(store, os.Stdin)
+	game := httpserver.NewCLI(store, os.Stdin, httpserver.BlindAlerterFunc(httpserver.StdOutAlerter))
 	game.PlayPoker()
 }
