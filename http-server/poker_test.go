@@ -1,6 +1,7 @@
 package httpserver
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 	"testing"
@@ -37,12 +38,13 @@ func assertScheduledAlert(t *testing.T, got, want scheduledAlert) {
 }
 
 func TestPoker(t *testing.T) {
+	var dummyStdOut = &bytes.Buffer{}
 	t.Run("it schedules printing of blind values", func(t *testing.T) {
 		in := strings.NewReader("Chris wins\n")
 		playerStore := &StubPlayerStore{}
 		blindAlerter := &SpyBlindAlerter{}
 
-		cli := NewCLI(playerStore, in, blindAlerter)
+		cli := NewCLI(playerStore, in, dummyStdOut, blindAlerter)
 		cli.PlayPoker()
 
 		cases := []scheduledAlert{
